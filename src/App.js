@@ -1,18 +1,48 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Counter from './components/counter';
 import PostItem from './components/postItem';
+import PostList from './components/PostList';
+import MyBtn from './components/UI/Btns/MyBtn';
+import MyInp from './components/UI/Input/MyInp';
 import './styles/App.css'
 
-
 function App() {
-  
-  const [value, setValue] = useState('Some text');
 
+  const [posts, setPosts] = useState([
+    {id: 1, title: 'JS', body: 'Some words'},
+    {id: 2, title: 'Python', body: 'Some words for Py'},
+    {id: 3, title: 'C#', body: 'Some words for C#'}
+  ])
+
+  const [title, setTitle] = useState('');
+
+  const addNewPost = function (e) {
+    e.preventDefault()
+    console.log(title)
+    console.log(bodyInputRef.curruent.value)
+    }
+
+  const bodyInputRef = useRef();
 
   return (
     <div className="App">
-      <PostItem post={{id: 1, title: 'JS', body: 'Some words'}} />
-      
+      <form>
+        <MyInp 
+          type="text" 
+          value = {title}
+          onChange={e=>setTitle(e.target.value)}
+          placeholder='Название поста'
+        >
+        </MyInp>
+        <MyInp 
+          ref={bodyInputRef}
+          type="text" 
+          placeholder='Описание поста'
+        >
+          </MyInp>
+        <MyBtn onClick={addNewPost} >Создать пост</MyBtn>
+      </form>
+      <PostList posts = {posts} title = 'Список 1'/>
     </div>
   );
 }
