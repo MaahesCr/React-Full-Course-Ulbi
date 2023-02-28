@@ -1,30 +1,18 @@
 import React, { useState } from 'react'
+import Counter from './components/counter';
+import PostItem from './components/postItem';
+import './styles/App.css'
 
 
 function App() {
   
-  const [likes, setLikes] = useState(0); 
   const [value, setValue] = useState('Some text');
 
-  function Increment() {
-    setLikes(likes + 1)
-  }
-
-  function Decrement() {
-    setLikes(likes - 1)
-  }
 
   return (
     <div className="App">
-      <h1>{likes}</h1>
-      <h1>{value}</h1>
-      <input 
-        type='tetx' 
-        value={value}
-        onChange = {event => setValue(event.target.value)}
-      ></input>
-      <button onClick={Increment}>Increment</button>
-      <button onClick={Decrement}>Decrement</button>
+      <PostItem post={{id: 1, title: 'JS', body: 'Some words'}} />
+      
     </div>
   );
 }
