@@ -19,7 +19,7 @@ function App() {
   const addNewPost = function (e) {
     e.preventDefault()
     console.log(title)
-    console.log(bodyInputRef.curruent.value)
+    console.log(bodyInputRef.current.value)
     }
 
   const bodyInputRef = useRef();
@@ -38,8 +38,8 @@ function App() {
           ref={bodyInputRef}
           type="text" 
           placeholder='Описание поста'
-        >
-          </MyInp>
+        />
+        
         <MyBtn onClick={addNewPost} >Создать пост</MyBtn>
       </form>
       <PostList posts = {posts} title = 'Список 1'/>
