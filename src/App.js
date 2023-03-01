@@ -15,11 +15,19 @@ function App() {
   ])
 
   const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
 
   const addNewPost = function (e) {
     e.preventDefault()
-    console.log(title)
-    console.log(bodyInputRef.current.value)
+    const newPost = {
+      id: Date.now(),
+      title,
+      body
+    }
+    setPosts([...posts, newPost])
+    setTitle('')
+    setBody('')
+
     }
 
   const bodyInputRef = useRef();
@@ -28,14 +36,15 @@ function App() {
     <div className="App">
       <form>
         <MyInp 
-          type="text" 
           value = {title}
           onChange={e=>setTitle(e.target.value)}
+          type="text" 
           placeholder='Название поста'
         >
         </MyInp>
         <MyInp 
-          ref={bodyInputRef}
+          value = {body}
+          onChange={e=>setBody(e.target.value)}
           type="text" 
           placeholder='Описание поста'
         />
