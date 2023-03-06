@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react'
+import React, { useMemo, useRef, useState, useEffect } from 'react'
 import Counter from './components/counter';
 import PostForm from './components/PostForm';
 import PostList from './components/PostList';
@@ -9,14 +9,15 @@ import MyBtn from './components/UI/Btns/MyBtn';
 import './styles/App.css'
 import MyModal from './components/UI/MyModal/MyModal';
 import { usePosts } from './hooks/usePost';
+import axios from 'axios';
 
 function App() {
 
-  const [posts, setPosts] = useState([
-    {id: 1, title: 'АА', body: 'ХХХ words'},
-    {id: 2, title: 'ВВ', body: 'ЪЪЪ words for Py'},
-    {id: 3, title: 'ГГ', body: 'ООО words for C#'}
-  ])
+  const [posts, setPosts] = useState([])
+
+  useEffect(() => {
+    fetchPosts()
+  }, []);
 
   const [filter, setFilter] = useState({sort: '', query: ''})
   const [modal, setModal] = useState(false);
@@ -25,6 +26,11 @@ function App() {
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
     setModal(false)
+  }
+
+  async function fetchPosts() {
+    const response = await axios.get('https://jsonplaceholder.typicode.com/posts')
+    setPosts(response.data)
   }
 
   const removePost = (post) => {
