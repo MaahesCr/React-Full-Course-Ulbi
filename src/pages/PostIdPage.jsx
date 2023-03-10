@@ -42,7 +42,7 @@ export default function PostIdPage() {
             ?   <Loader/> 
             :   <div>
                     {comments.map(comm => 
-                        <div style={{marginTop:20}}>
+                        <div key={comm.id} style={{marginTop:20}}>
                             <h5>{comm.email}</h5>
                             <h5 style={{marginTop:7}}>{comm.body}</h5>
                             <hr />
