@@ -18,7 +18,7 @@ export default function PostIdPage() {
     const [fetchComments, isComLoading, comError] = useFetching( async () => {
         const responce = await PostService.getCommentsByPostId(params.id)
         setComments(responce.data)
-        console.log(comments)
+        //console.log(comments)
         //console.log(comments.data[0].body)
     });
     //

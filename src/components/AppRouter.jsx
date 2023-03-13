@@ -10,7 +10,7 @@ export default function AppRouter() {
   console.log(isAuth)
 
   if (isLoading) {
-    <Loader></Loader>
+    return <Loader/>
   } 
 
   return (

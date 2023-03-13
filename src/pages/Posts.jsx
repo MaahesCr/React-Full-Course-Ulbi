@@ -14,6 +14,8 @@ import Loader from '../components/UI/Loader/Loader';
 import { useFetching } from '../hooks/useFetch';
 import { getPageCount, getPageArray } from '../utils/pages.js'
 import Pagination from '../components/UI/Pagination/Pagination';
+import { useObserver } from '../hooks/useObserver';
+import MySelect from '../components/UI/Select/MySelect';
 
 function Posts() {
 
@@ -24,17 +26,22 @@ function Posts() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query)
+  const lastElem = useRef()
 
   const [fetchPosts, isPostsLoading, postError] = useFetching( async () => {
     const response = await PostService.getAll(limit, page)
-    setPosts(response.data)
+    setPosts([...posts, ...response.data])
     const totalCount = response.headers['x-total-count']
     setTotalPages(getPageCount(totalCount, limit))
   })
 
+  useObserver(lastElem, page < totalPages, isPostsLoading, () => {
+    setPage(page + 1)
+  })
+
   useEffect(() => {
     fetchPosts()
-  }, [page]);
+  }, [page, limit]);
 
 
   const createPost = (newPost) => {
@@ -63,13 +70,25 @@ function Posts() {
         filter={filter}
         setFilter={setFilter}
       />
+      <MySelect
+        value={limit}
+        onChange={value => setLimit(value)}
+        defaultValue='Кол-во эл-ов на странице'
+        option={[
+          {value:5, name: '5'},
+          {value:10, name: '10'},
+          {value:25, name: '25'},
+          {value:-1, name: 'Все'}
+        ]}
+      />
       {postError &&
         <h1>Произошла ошибка ${postError}</h1>
       }
 
-      {isPostsLoading
-        ? <div style={{display:'flex', justifyContent:'center', marginTop:30}}><Loader/></div> 
-        : <PostList remove={removePost} posts = {sortedAndSearchedPosts} title = 'Список 1'/> 
+      <PostList remove={removePost} posts = {sortedAndSearchedPosts} title = 'Список 1'/> 
+      <div ref={lastElem} style={{height:10, background:'red'}}/>
+      {isPostsLoading &&
+        <div style={{display:'flex', justifyContent:'center', marginTop:30}}><Loader/></div> 
       }
 
       <Pagination
